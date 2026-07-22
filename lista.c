@@ -7,7 +7,7 @@ Genero *iniciarGenero() {
     return NULL;
 }
 
-void imprimir(Genero *g) {
+void imprimirGeneros(Genero *g) {
     Genero *atual = *g;
     if(atual == NULL) {
         printf("Lista de generos vazia\n");
@@ -29,7 +29,7 @@ void imprimir(Genero *g) {
     }
 }
 
-int contar(Genero *g) {
+int contarGeneros(Genero *g) {
     int count = 0;
     Genero *atual = *g;
     while(atual != NULL) {
