@@ -96,7 +96,7 @@ int contarGeneros(Genero *g) {
     return count;
 }
 
-//FUNÇÕES LAURA-----------------
+//---------------FUNÇÕES LAURA-----------------
 struct _artista {
 	char nome[100];
 	char cidade_origem[100];
