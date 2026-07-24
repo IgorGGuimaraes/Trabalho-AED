@@ -97,29 +97,6 @@ int contarGeneros(Genero *g) {
 }
 
 //---------------FUNÇÕES LAURA-----------------
-struct _artista {
-	char nome[100];
-	char cidade_origem[100];
-	char periodo_atuacao[50];
-	char principais_obras[200];
-	char integrantes[200];
-	char premiacoes[200];
-
-	struct _artista *ant;
-	struct _artista *prox;
-};
-
-typedef struct _artista Artista;
-
-struct _genero {
-	char nome[50];
-	Artista *artistas;
-
-	struct _genero *ant;
-	struct _genero *prox;
-};
-
-typedef struct _genero Genero;
 
 Genero* inserir_genero(Genero *lista_generos, const char *nome_genero) {
 	Genero *novo = (Genero*) malloc(sizeof(Genero));
