@@ -1,11 +1,16 @@
 #ifndef _LISTA_H
 #define _LISTA_H
 
+typedef struct Artista {
+	char nome[100];
+	char cidade_origem[100];
+	char periodo_atuacao[50];
+	char principais_obras[200];
+	char integrantes[200];
+	char premiacoes[200];
 
-typedef struct Artista{
-    char nome[100];
-    struct Artista *ant;
-    struct Artista *prox;
+	struct _artista *ant;
+	struct _artista *prox;
 } Artista;
 
 
@@ -16,16 +21,16 @@ typedef struct Genero{
     Artista *artistas;
 } Genero;
 
+//------------Igor
 Genero *iniciarGenero();
 void imprimirGeneros(Genero *g);
 int contarGeneros(Genero *g);
 
+//-----------------Rhuan
 void alterarGenero(Genero *g, char nomeAtual[], char novoNome[]);
 int removerGenero(Genero **g, char nome[]);
 
 //---------Laura--------
-typedef struct _artista Artista;
-typedef struct _genero Genero;
 Genero* buscar_genero(Genero *lista, const char *nome_genero);
 Genero* inserir_genero(Genero *lista_generos, const char *nome_genero);
 Artista* buscar_artista(Genero *lista_generos, const char *nome_artista);
