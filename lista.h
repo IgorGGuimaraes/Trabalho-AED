@@ -25,6 +25,8 @@ typedef struct Genero{
 Genero *iniciarGenero();
 void imprimirGeneros(Genero *g);
 int contarGeneros(Genero *g);
+void listarElementos(Genero *g);
+int contarArtistas(Genero *g);
 
 //-----------------Rhuan
 void alterarGenero(Genero *g, char nomeAtual[], char novoNome[]);
