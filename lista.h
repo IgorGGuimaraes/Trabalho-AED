@@ -25,7 +25,7 @@ typedef struct Genero{
 Genero *iniciarGenero();
 void imprimirGeneros(Genero *g);
 int contarGeneros(Genero *g);
-void listarElementos(Genero *g);
+void listarArtistas(Genero *g);
 int contarArtistas(Genero *g);
 
 //-----------------Rhuan
