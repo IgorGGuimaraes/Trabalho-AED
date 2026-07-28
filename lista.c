@@ -96,6 +96,40 @@ int contarGeneros(Genero *g) {
     return count;
 }
 
+void listarArtistas(Genero *g) {
+    if(genero == NULL) {
+        printf("Gênero inválido");
+        return;
+    }
+    
+    Artista *atual = g->artistas;
+    int num = 0;
+    
+    while(atual != NULL) {
+        printf("Artista nº %d : %s", num++, atual->nome);
+        printf("Cidade de Origem: %s\n", atual->cidade_origem);
+        printf("Período de Atuação: %s\n", atual->periodo_atuacao);
+        printf("Principais Obras: %s\n", atual->principais_obras);
+        printf("Integrantes: %s\n", atual->integrantes);
+        printf("Premiações: %s\n", atual->premiacoes);
+        
+        atual = atual->prox;
+    }
+}
+
+int contarArtistas(Genero *g) {
+    if(Genero == NULL) {
+        return 0;
+    }
+    int count = 0;
+    Artista *atual = g->artistas;
+    while(atual != NULL) {
+        count++;
+        atual = atual->prox;
+    }
+    return count;
+}
+
 //---------------FUNÇÕES LAURA-----------------
 
 Genero* inserir_genero(Genero *lista_generos, const char *nome_genero) {
