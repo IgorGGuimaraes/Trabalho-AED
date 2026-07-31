@@ -130,6 +130,76 @@ int contarArtistas(Genero *g) {
     return count;
 }
 
+//Listar todos os Artistas (elementos da lista secundária)
+
+void listarArtistas(Genero *g){
+    Genero *atual = g;
+    int encontrou = 0;
+    
+    if(atual == NULL) {
+        printf("Lista vazia\n");
+        return;
+    }
+    
+    printf("Artistas:\n");
+    while(atual != NULL) {
+        printf("Nome: %s\n", art_atual->nome);
+        printf("Genero: %s\n", gen_atual->nome);
+        printf("Cidade de Origem: %s\n", art_atual->cidade_origem);
+        printf("Periodo: %s\n", art_atual->periodo_atuacao);
+        printf("Principais Obras: %s\n", art_atual->principais_obras);
+        printf("Integrantes: %s\n", art_atual->integrantes);
+        printf("Premiacoes: %s\n", art_atual->premiacoes);
+
+        encontrou = 1;
+        atual = atual->prox;
+    }
+    
+    if(encontrou == 0){
+        printf("Nenhum artista encontrado\n");
+    }
+}
+
+//Filtrar elementos da lista secundária por atributos
+
+void filtrarArtistasPorCidade(Genero *g, char *cidade) {
+    Genero *genAtual = g;
+    int encontrou = 0;
+    
+    if(genAtual == NULL) {
+        printf("Lista vazia\n");
+        return;
+    }
+    
+    printf("Artistas da cidade %s", genAtual->cidade_origem);
+    while(genAtual != NULL) {
+        
+        Artista artAtual = genAtual->artistas;
+        
+        while(artAtual != NULL) {
+            if(strcmp(artAtual->cidade_origem, cidade) == 0) {
+                printf("Nome: %s\n", art_atual->nome);
+                printf("Genero: %s\n", gen_atual->nome);
+                printf("Periodo: %s\n", art_atual->periodo_atuacao);
+                printf("Principais Obras: %s\n", art_atual->principais_obras);
+                printf("Integrantes: %s\n", art_atual->integrantes);
+                printf("Premiacoes: %s\n", art_atual->premiacoes);
+                printf("-------------------------\n");
+                
+                encontrou = 1;
+            }
+            artAtual = artAtual->prox;
+        }
+        
+        genAtual = genAtual->prox;
+    }
+    
+    if(encontrou == 0) {
+        printf("Não há nenhum artista desta cidade\n");
+    }
+    
+}
+
 //---------------FUNÇÕES LAURA-----------------
 
 Genero* inserir_genero(Genero *lista_generos, const char *nome_genero) {
