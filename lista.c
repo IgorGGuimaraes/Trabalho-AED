@@ -229,5 +229,89 @@ Artista* buscar_artista(Genero *lista_generos, const char *nome_artista) {
 		printf("\nArtista '%s' não foi encontrado em nenhum gênero.\n", nome_artista);
 	}
 }
+//-----------------------------------Lista secundária-Laura-----------------------------------------------
+int inserir_artista_no_genero(Genero *genero_alvo, 
+                             const char *nome, 
+                             const char *cidade, 
+                             const char *periodo, 
+                             const char *obras, 
+                             const char *integrantes, 
+                             const char *premiacoes) {
+    
+    if (genero_alvo == NULL) {
+        printf("Erro: O gênero especificado não existe.\n");
+        return 0; 
+    }
+
+    
+    Artista *novo = (Artista*) malloc(sizeof(Artista));
+    if (novo == NULL) {
+        printf("Erro: Falha na alocação de memória para o artista.\n");
+        return 0; 
+    }
+
+    
+    strncpy(novo->nome, nome, sizeof(novo->nome) - 1);
+    strncpy(novo->cidade_origem, cidade, sizeof(novo->cidade_origem) - 1);
+    strncpy(novo->periodo_atuacao, periodo, sizeof(novo->periodo_atuacao) - 1);
+    strncpy(novo->principais_obras, obras, sizeof(novo->principais_obras) - 1);
+    strncpy(novo->integrantes, integrantes, sizeof(novo->integrantes) - 1);
+    strncpy(novo->premiacoes, premiacoes, sizeof(novo->premiacoes) - 1);
+
+    
+    novo->ant = NULL;
+    novo->prox = genero_alvo->artistas; 
 
 
+    if (genero_alvo->artistas != NULL) {
+        genero_alvo->artistas->ant = novo;
+    }
+
+    
+    genero_alvo->artistas = novo;
+
+    printf("Sucesso: Artista '%s' inserido no gênero '%s'.\n", nome, genero_alvo->nome);
+    return 1; 
+}
+//---------------------------------------------------------------------------------------
+
+Artista* buscar_artista_no_genero(Genero *genero_alvo, const char *nome_artista) {
+    if (genero_alvo == NULL) {
+        printf("Gênero inválido para busca.\n");
+        return NULL;
+    }
+
+    Artista *atual = genero_alvo->artistas;
+
+    
+    while (atual != NULL) {
+        if (strcasecmp(atual->nome, nome_artista) == 0) {
+            return atual; 
+        }
+        atual = atual->prox;
+    }
+
+    return NULL; 
+}
+//--------------------------------------------------------------------------------------
+
+Artista* buscar_artista_global(Genero *lista_generos, const char *nome_artista, Genero **genero_encontrado) {
+    Genero *g_atual = lista_generos;
+
+    while (g_atual != NULL) {
+        Artista *a_atual = g_atual->artistas;
+        
+        while (a_atual != NULL) {
+            if (strcasecmp(a_atual->nome, nome_artista) == 0) {
+                if (genero_encontrado != NULL) {
+                    *genero_encontrado = g_atual; 
+                }
+                return a_atual;
+            }
+            a_atual = a_atual->prox;
+        }
+        g_atual = g_atual->prox;
+    }
+
+    return NULL; 
+}
