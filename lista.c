@@ -133,7 +133,7 @@ int contarArtistas(Genero *g) {
 //Listar todos os Artistas (elementos da lista secundária)
 
 void listarTodosArtistas(Genero *g){
-    Genero *atual = g;
+    Genero *genAtual = g;
     int encontrou = 0;
     
     if(atual == NULL) {
@@ -142,17 +142,24 @@ void listarTodosArtistas(Genero *g){
     }
     
     printf("Artistas:\n");
-    while(atual != NULL) {
-        printf("Nome: %s\n", art_atual->nome);
-        printf("Genero: %s\n", gen_atual->nome);
-        printf("Cidade de Origem: %s\n", art_atual->cidade_origem);
-        printf("Periodo: %s\n", art_atual->periodo_atuacao);
-        printf("Principais Obras: %s\n", art_atual->principais_obras);
-        printf("Integrantes: %s\n", art_atual->integrantes);
-        printf("Premiacoes: %s\n", art_atual->premiacoes);
+    while(genAtual != NULL) {
+		Artista *artAtual = genAtual->artistas;
+			
+		while(artAtual != NULL) {
+			printf("Nome: %s\n", art_atual->nome);
+       		 printf("Genero: %s\n", gen_atual->nome);
+        	printf("Cidade de Origem: %s\n", art_atual->cidade_origem);
+	        printf("Periodo: %s\n", art_atual->periodo_atuacao);
+        	printf("Principais Obras: %s\n", art_atual->principais_obras);
+        	printf("Integrantes: %s\n", art_atual->integrantes);
+        	printf("Premiacoes: %s\n", art_atual->premiacoes);
 
-        encontrou = 1;
-        atual = atual->prox;
+        	encontrou = 1;
+        	artAtual = artAtual->prox;
+		}
+
+		genAtual = genAtual->prox;
+        
     }
     
     if(encontrou == 0){
