@@ -132,7 +132,7 @@ int contarArtistas(Genero *g) {
 
 //Listar todos os Artistas (elementos da lista secundária)
 
-void listarArtistas(Genero *g){
+void listarTodosArtistas(Genero *g){
     Genero *atual = g;
     int encontrou = 0;
     
