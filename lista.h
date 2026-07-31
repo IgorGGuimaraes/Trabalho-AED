@@ -27,6 +27,8 @@ void imprimirGeneros(Genero *g);
 int contarGeneros(Genero *g);
 void listarArtistas(Genero *g);
 int contarArtistas(Genero *g);
+void listarArtistas(Genero *g);
+void filtrarArtistasPorCidade(Genero *g, char *cidade);
 
 //-----------------Rhuan
 void alterarGenero(Genero *g, char nomeAtual[], char novoNome[]);
