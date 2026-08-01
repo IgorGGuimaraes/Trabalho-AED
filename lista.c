@@ -513,3 +513,99 @@ Artista* buscar_artista_global(Genero *lista_generos, const char *nome_artista, 
 
     return NULL; 
 }
+//--------------------------------------------------------------------------------
+
+Artista* buscar_artista_qualquer(Genero *no_qualquer, const char *nome_artista, Genero **genero_encontrado) {
+    if (no_qualquer == NULL) return NULL;
+
+    Genero *inicio_generos = no_qualquer;
+    while (inicio_generos->ant != NULL) {
+        inicio_generos = inicio_generos->ant;
+    }
+
+    Genero *g_atual = inicio_generos;
+    while (g_atual != NULL) {
+        Artista *a_atual = g_atual->artistas;
+        
+        while (a_atual != NULL) {
+            if (strcasecmp(a_atual->nome, nome_artista) == 0) {
+                if (genero_encontrado != NULL) {
+                    *genero_encontrado = g_atual; // Retorna também em qual gênero ele está
+                }
+                return a_atual;
+            }
+            a_atual = a_atual->prox;
+        }
+        g_atual = g_atual->prox;
+    }
+
+    return NULL; 
+}
+//-------------------------------------------------------------------------------
+
+int ja_impresso(char nomes_impressos[][100], int qtd, const char *nome) {
+    for (int i = 0; i < qtd; i++) {
+        if (strcasecmp(nomes_impressos[i], nome) == 0) return 1;
+    }
+    return 0;
+}
+
+void identificar_artistas_multi_genero(Genero *no_qualquer) {
+    if (no_qualquer == NULL) {
+        printf("Lista vazia.\n");
+        return;
+    }
+
+    Genero *inicio = no_qualquer;
+    while (inicio->ant != NULL) {
+        inicio = inicio->ant;
+    }
+
+    char impressos[100][100]; 
+    int qtd_impressos = 0;
+    int encontrou_duplicados = 0;
+
+    printf("\n=== ARTISTAS ASSOCIADOS A MAIS DE UM GÊNERO ===\n");
+
+    for (Genero *g1 = inicio; g1 != NULL; g1 = g1->prox) {
+        for (Artista *a1 = g1->artistas; a1 != NULL; a1 = a1->prox) {
+
+            if (ja_impresso(impressos, qtd_impressos, a1->nome)) continue;
+
+            int contagem_generos = 0;
+            
+            for (Genero *g2 = inicio; g2 != NULL; g2 = g2->prox) {
+                for (Artista *a2 = g2->artistas; a2 != NULL; a2 = a2->prox) {
+                    if (strcasecmp(a1->nome, a2->nome) == 0) {
+                        contagem_generos++;
+                        break; 
+                    }
+                }
+            }
+
+            if (contagem_generos > 1) {
+                encontrou_duplicados = 1;
+                printf("- '%s' está associado a %d gêneros (ex: '%s')", 
+                       a1->nome, contagem_generos, g1->nome);
+                
+                printf(" -> Gêneros: [ ");
+                for (Genero *g2 = inicio; g2 != NULL; g2 = g2->prox) {
+                    for (Artista *a2 = g2->artistas; a2 != NULL; a2 = a2->prox) {
+                        if (strcasecmp(a1->nome, a2->nome) == 0) {
+                            printf("%s ", g2->nome);
+                            break;
+                        }
+                    }
+                }
+                printf("]\n");
+
+                strcpy(impressos[qtd_impressos++], a1->nome);
+            }
+        }
+    }
+
+    if (!encontrou_duplicados) {
+        printf("Nenhum artista foi encontrado em múltiplos gêneros.\n");
+    }
+    printf("================================================\n");
+}
