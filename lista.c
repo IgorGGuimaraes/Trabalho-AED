@@ -3,10 +3,11 @@
 #include <string.h>
 #include "lista.h"
 
-//funçoes rhuan
+//funções rhuan
 
 void alterarGenero(Genero *g, char nomeAtual[], char novoNome[]) {
     Genero *atual = g;
+
     while (atual != NULL) {
         if (strcmp(atual->nome, nomeAtual) == 0) {
             strcpy(atual->nome, novoNome);
@@ -15,47 +16,167 @@ void alterarGenero(Genero *g, char nomeAtual[], char novoNome[]) {
         }
         atual = atual->prox;
     }
+
     printf("Genero nao encontrado.\n");
 }
 
 int removerGenero(Genero **g, char nome[]) {
     Genero *atual = *g;
+
     while (atual != NULL && strcmp(atual->nome, nome) != 0) {
         atual = atual->prox;
     }
+
     if (atual == NULL) {
         printf("Genero nao encontrado.\n");
-        return 0; }
+        return 0;
+    }
+
     if (atual->artistas != NULL) {
         printf("Nao e possivel remover um genero que possui artistas cadastrados.\n");
         return 0;
     }
-    
-    //elemento unico da lista
+
+    // Único elemento
     if (atual->ant == NULL && atual->prox == NULL) {
         *g = NULL;
     }
-    
-    // removendo no inicio 
+
+    // Primeiro elemento
     else if (atual->ant == NULL) {
         *g = atual->prox;
         atual->prox->ant = NULL;
     }
 
-    // removendo no final
+    // Último elemento
     else if (atual->prox == NULL) {
         atual->ant->prox = NULL;
     }
 
-    // removendo no meio
+    // Elemento do meio
     else {
         atual->ant->prox = atual->prox;
         atual->prox->ant = atual->ant;
     }
 
     free(atual);
+
     printf("Genero removido com sucesso!\n");
     return 1;
+}
+
+void alterarArtista(Genero *genero,
+                    char nomeAtual[],
+                    char novoNome[],
+                    char cidade[],
+                    char periodo[],
+                    char obras[],
+                    char integrantes[],
+                    char premiacoes[]) {
+
+    Artista *artista = buscar_artista_no_genero(genero, nomeAtual);
+
+    if (artista == NULL) {
+        printf("Artista nao encontrado.\n");
+        return;
+    }
+
+    strcpy(artista->nome, novoNome);
+    strcpy(artista->cidade_origem, cidade);
+    strcpy(artista->periodo_atuacao, periodo);
+    strcpy(artista->principais_obras, obras);
+    strcpy(artista->integrantes, integrantes);
+    strcpy(artista->premiacoes, premiacoes);
+
+    printf("Artista alterado com sucesso!\n");
+}
+
+int removerArtista(Genero *genero, char nome[]) {
+
+    if (genero == NULL) {
+        return 0;
+    }
+
+    Artista *atual = genero->artistas;
+
+    while (atual != NULL && strcmp(atual->nome, nome) != 0) {
+        atual = atual->prox;
+    }
+
+    if (atual == NULL) {
+        printf("Artista nao encontrado.\n");
+        return 0;
+    }
+
+    // Único artista
+    if (atual->ant == NULL && atual->prox == NULL) {
+        genero->artistas = NULL;
+    }
+
+    // Primeiro artista
+    else if (atual->ant == NULL) {
+        genero->artistas = atual->prox;
+        atual->prox->ant = NULL;
+    }
+
+    // Último artista
+    else if (atual->prox == NULL) {
+        atual->ant->prox = NULL;
+    }
+
+    // Artista do meio
+    else {
+        atual->ant->prox = atual->prox;
+        atual->prox->ant = atual->ant;
+    }
+
+    free(atual);
+
+    printf("Artista removido com sucesso!\n");
+    return 1;
+}
+
+// Contabilizar quantos artistas existem em cada gênero
+void artistasPorGenero(Genero *lista) {
+
+    Genero *atual = lista;
+
+    if (atual == NULL) {
+        printf("Lista de generos vazia.\n");
+        return;
+    }
+
+    while (atual != NULL) {
+
+        printf("\nGenero: %s\n", atual->nome);
+        printf("Quantidade de artistas: %d\n", contarArtistas(atual));
+
+        atual = atual->prox;
+    }
+}
+// Encontrar o gênero com menos artistas
+void generoComMenosArtistas(Genero *lista) {
+
+    if (lista == NULL) {
+        printf("Lista de generos vazia.\n");
+        return;
+    }
+
+    Genero *menor = lista;
+    Genero *atual = lista->prox;
+
+    while (atual != NULL) {
+
+        if (contarArtistas(atual) < contarArtistas(menor)) {
+            menor = atual;
+        }
+
+        atual = atual->prox;
+    }
+
+    printf("\nGenero com menor quantidade de artistas:\n");
+    printf("Nome: %s\n", menor->nome);
+    printf("Quantidade de artistas: %d\n", contarArtistas(menor));
 }
 
 //Funçoes do Igor
