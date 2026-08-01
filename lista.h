@@ -86,5 +86,10 @@ int inserir_artista_no_genero(Genero *genero_alvo,
                               const char *obras,
                               const char *integrantes,
                               const char *premiacoes);
+Artista* buscar_artista_qualquer(Genero *no_qualquer, const char *nome_artista, Genero **genero_encontrado);
+int ja_impresso(char nomes_impressos[][100], int qtd, const char *nome);
+void identificar_artistas_multi_genero(Genero *no_qualquer);
+
+
 
 #endif
