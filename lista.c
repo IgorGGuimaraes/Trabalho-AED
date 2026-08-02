@@ -233,9 +233,12 @@ void listarArtistas(Genero *g) {
         printf("Principais Obras: %s\n", atual->principais_obras);
         printf("Integrantes: %s\n", atual->integrantes);
         printf("Premiações: %s\n", atual->premiacoes);
-        
+
+		num = 1;
         atual = atual->prox;
     }
+	if(num == 0){
+		printf("Nenhum artista encontrado");
 }
 
 int contarArtistas(Genero *g) {
