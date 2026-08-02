@@ -260,7 +260,7 @@ void listarTodosArtistas(Genero *g){
     Genero *genAtual = g;
     int encontrou = 0;
     
-    if(atual == NULL) {
+    if(genAtual == NULL) {
         printf("Lista vazia\n");
         return;
     }
