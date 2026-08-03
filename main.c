@@ -24,17 +24,10 @@ int main() {
     listaGeneros = inserir_genero(listaGeneros, "Rock");
     listaGeneros = inserir_genero(listaGeneros, "Pop");
     
-    if (listaGeneros != NULL) {
-        Genero *rock = buscar_genero(listaGeneros, "Rock");
-        if (rock != NULL) {
-            inserir_artista(rock, "Queen", "Londres", "1970-presente", "Bohemian Rhapsody", "Freddie, Brian, Roger, John", "Grammy Hall of Fame");
-        }
-        
-        Genero *pop = buscar_genero(listaGeneros, "Pop");
-        if (pop != NULL) {
-            inserir_artista(pop, "Queen", "Londres", "1970-presente", "Radio Ga Ga", "Freddie, Brian, Roger, John", "Grammy");
-        }
-    }
+    Genero *rock = buscar_genero(listaGeneros, "Rock");
+    inserir_artista(rock, "Queen", "Londres", "1970-presente", "Bohemian Rhapsody", "Freddie, Brian, Roger, John", "Grammy Hall of Fame");
+    Genero *pop = buscar_genero(listaGeneros, "Pop");
+    inserir_artista(pop, "Queen", "Londres", "1970-presente", "Radio Ga Ga", "Freddie, Brian, Roger, John", "Grammy");
 
     do {
         printf("\n============================================\n");
