@@ -209,7 +209,7 @@ void imprimirGeneros(Genero *g) {
 
 int contarGeneros(Genero *g) {
     int count = 0;
-    Genero *atual = *g;
+    Genero *atual = g;
     while(atual != NULL) {
         count++;
         atual = atual->prox;
