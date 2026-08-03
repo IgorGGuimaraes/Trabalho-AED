@@ -186,7 +186,7 @@ Genero *iniciarGenero() {
 }
 
 void imprimirGeneros(Genero *g) {
-    Genero *atual = *g;
+    Genero *atual = g;
     if(atual == NULL) {
         printf("Lista de generos vazia\n");
         return;
