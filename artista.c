@@ -352,3 +352,71 @@ void identificar_artistas_multi_genero(Genero *lista) {
         g1 = g1->prox;
     }
 }
+
+// Encontrar o gênero com menor quantidade de artistas
+
+void generoComMenosArtistas(Genero *g) {
+    if (g == NULL) {
+        printf("Lista vazia.\n");
+        return;
+    }
+    Genero *menor = g;
+    int menorQtd = contarArtistas(g);
+    Genero *atual = g->prox;
+    while (atual != NULL) {
+        int qtd = contarArtistas(atual);
+        if (qtd < menorQtd) {
+            menorQtd = qtd;
+            menor = atual;
+        }
+        atual = atual->prox;
+    }
+    printf("Genero com menor quantidade de artistas:\n");
+    printf("%s (%d artistas)\n", menor->nome, menorQtd);
+}
+
+// Identificar artistas que aparecem em mais de um gênero
+
+void identificar_artistas_multi_genero(Genero *lista) {
+
+    if (lista == NULL) {
+        printf("Lista vazia.\n");
+        return;
+    }
+    char impressos[100][100];
+    int qtdImpressos = 0;
+	
+    Genero *g1 = lista;
+    while (g1 != NULL) {
+        Artista *a1 = g1->artistas;
+        while (a1 != NULL) {
+            int jaImpresso = 0;
+            for (int i = 0; i < qtdImpressos; i++) {
+                if (strcmp(impressos[i], a1->nome) == 0) {
+                    jaImpresso = 1;
+                    break;
+                }
+            }
+            if (!jaImpresso) {
+                Genero *g2 = g1->prox;
+                int repetido = 0;
+                while (g2 != NULL) {
+                    Artista *a2 = g2->artistas;
+                    while (a2 != NULL) {
+                        if (strcasecmp(a1->nome, a2->nome) == 0) {
+                            repetido = 1;
+                        }
+                        a2 = a2->prox;
+                    }
+                    g2 = g2->prox;
+                }
+                if (repetido) {
+                    printf("%s aparece em mais de um genero.\n", a1->nome);
+                    strcpy(impressos[qtdImpressos++], a1->nome);
+                }
+            }
+            a1 = a1->prox;
+        }
+        g1 = g1->prox;
+    }
+}
