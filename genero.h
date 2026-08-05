@@ -19,3 +19,5 @@ int removerGenero(Genero **g, char nome[]);
 void imprimirGeneros(Genero *g);
 int contarGeneros(Genero *g);
 
+#endif
+
