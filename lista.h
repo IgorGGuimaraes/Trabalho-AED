@@ -34,15 +34,6 @@ int contarGeneros(Genero *g);
 
 
 //LISTA SECUNDARIA
-
-void inserir_artista(Genero *genero,
-                     const char *nome,
-                     const char *cidade,
-                     const char *periodo,
-                     const char *obras,
-                     const char *integrantes,
-                     const char *premiacoes);
-
 int inserir_artista_no_genero(Genero *genero_alvo,
                               const char *nome,
                               const char *cidade,
