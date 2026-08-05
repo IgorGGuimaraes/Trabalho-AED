@@ -1,3 +1,6 @@
+#ifndef GENERO_H
+#define GENERO_H
+
 typedef struct Artista Artista;
 
 typedef struct Genero {
