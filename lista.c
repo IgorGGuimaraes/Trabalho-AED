@@ -294,7 +294,7 @@ void listarArtistas(Genero *g) {
         return;
     }
     Artista *atual = g->artistas;
-    int num = 1;
+    int num = 0;
     while (atual != NULL) {
 
         printf("\nArtista %d\n", num++);
@@ -306,8 +306,9 @@ void listarArtistas(Genero *g) {
         printf("Premiacoes: %s\n", atual->premiacoes);
 
         atual = atual->prox;
+		num = 1;
     }
-    if (num == 1) {
+    if (num == 0) {
         printf("Nenhum artista encontrado.\n");
     }
 }
@@ -402,7 +403,7 @@ void listarTodosArtistas(Genero *g) {
         }
         genAtual = genAtual->prox;
     }
-    if (!encontrou) {
+    if (encontrou == 0) {
         printf("Nenhum artista encontrado.\n");
     }
 }
@@ -435,7 +436,7 @@ void filtrarArtistasPorCidade(Genero *g, char *cidade) {
         }
         genAtual = genAtual->prox;
     }
-    if (!encontrou) {
+    if (encontrou == 0) {
         printf("Nao ha nenhum artista desta cidade.\n");
     }
 }
