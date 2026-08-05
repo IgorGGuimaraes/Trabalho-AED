@@ -1,0 +1,5 @@
+Rock;Queen;Londres;1970-presente;Bohemian Rhapsody;Freddie Mercury,Brian May,Roger Taylor,John Deacon;Grammy Hall of Fame
+Rock;Nirvana;Seattle;1987-1994;Nevermind;Kurt Cobain,Dave Grohl,Krist Novoselic;Grammy
+Pop;Taylor Swift;Reading;2004-presente;1989;Taylor Swift;Grammy
+Pop;Michael Jackson;Gary;1964-2009;Thriller;Solo;Grammy
+Rap;Eminem;Detroit;1996-presente;The Marshall Mathers LP;Solo;Grammy
