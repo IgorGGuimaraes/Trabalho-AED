@@ -143,7 +143,7 @@ int main() {
                 printf("Nome do artista: ");
                 scanf(" %[^\n]", nomeArt);
 
-                buscar_artista(listaGeneros, nomeArt);
+                buscar_artista_global(listaGeneros, nomeArt);
                 break;
 
             case 9:
@@ -275,6 +275,8 @@ int main() {
             default:
                 printf("\nOpcao invalida! Tente novamente.\n");
                 break;
+
+            return 0;
         }
 
     } while (opcao != 0);
