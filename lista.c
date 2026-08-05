@@ -67,13 +67,17 @@ int removerGenero(Genero **g, char nome[]) {
         printf("Nao e possivel remover um genero que possui artistas cadastrados.\n");
         return 0;
     }
+	//se for o unico da lista
     if (atual->ant == NULL && atual->prox == NULL) {
         *g = NULL;
+	//se for o primeiro da lista
     } else if (atual->ant == NULL) {
         *g = atual->prox;
         atual->prox->ant = NULL;
+	//se for o ultimo da lista
     } else if (atual->prox == NULL) {
         atual->ant->prox = NULL;
+	//se tiver no meio da lista
     } else {
         atual->ant->prox = atual->prox;
         atual->prox->ant = atual->ant;
