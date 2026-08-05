@@ -1,7 +1,10 @@
+#include "genero.h"
+#include "artista.h"
+#include "arquivo.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "lista.h"
 
 int main() {
 
