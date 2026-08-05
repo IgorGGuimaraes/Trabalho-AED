@@ -6,6 +6,8 @@
 int main() {
 
     Genero *listaGeneros = iniciarGenero();
+    carregarArquivo(&listaGeneros);
+
     Genero *genEncontrado = NULL;
 
     int opcao = 0;
@@ -14,29 +16,7 @@ int main() {
     char nomeArt[100], novoNomeArt[100];
     char cidade[100], periodo[100];
     char obras[200], integrantes[200], premiacoes[200];
-
-    // Dados iniciais para teste
-    listaGeneros = inserir_genero(listaGeneros, "Rock");
-    listaGeneros = inserir_genero(listaGeneros, "Pop");
-
-    Genero *rock = buscar_genero(listaGeneros, "Rock");
-    inserir_artista(rock,
-                    "Queen",
-                    "Londres",
-                    "1970-presente",
-                    "Bohemian Rhapsody",
-                    "Freddie, Brian, Roger, John",
-                    "Grammy Hall of Fame");
-
-    Genero *pop = buscar_genero(listaGeneros, "Pop");
-    inserir_artista(pop,
-                    "Queen",
-                    "Londres",
-                    "1970-presente",
-                    "Radio Ga Ga",
-                    "Freddie, Brian, Roger, John",
-                    "Grammy");
-
+    
     do {
 
         printf("\n============================================\n");
