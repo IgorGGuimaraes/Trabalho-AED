@@ -1,7 +1,7 @@
+#include "artista.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "lista.h"
 
 int inserir_artista_no_genero(Genero *genero_alvo,
                               const char *nome,
