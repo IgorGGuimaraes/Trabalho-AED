@@ -142,8 +142,8 @@ int main() {
                 printf("\n--- BUSCAR ARTISTA ---\n");
                 printf("Nome do artista: ");
                 scanf(" %[^\n]", nomeArt);
-
-                buscar_artista_global(listaGeneros, nomeArt);
+                Genero *generoEncontrado = NULL;
+                buscar_artista_global(listaGeneros, nomeArt, &generoEncontrado);
                 break;
 
             case 9:
