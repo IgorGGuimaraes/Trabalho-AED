@@ -1,4 +1,5 @@
 #include "genero.h"
+#include "artista.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
