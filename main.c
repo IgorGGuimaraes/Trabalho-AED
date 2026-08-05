@@ -4,207 +4,284 @@
 #include "lista.h"
 
 int main() {
-    Genero *listaGeneros = iniciarGenero();
-    int opcao = 0;
 
-    // Variáveis auxiliares para leitura dos dados
-    char nomeGen[100], novoNomeGen[100];
-    char nomeArt[100], novoNomeArt[100], cidade[100], periodo[100], obras[200], integrantes[200], premiacoes[200];
+    Genero *listaGeneros = iniciarGenero();
     Genero *genEncontrado = NULL;
 
-    // População inicial para testes
+    int opcao = 0;
+
+    char nomeGen[100], novoNomeGen[100];
+    char nomeArt[100], novoNomeArt[100];
+    char cidade[100], periodo[100];
+    char obras[200], integrantes[200], premiacoes[200];
+
+    // Dados iniciais para teste
     listaGeneros = inserir_genero(listaGeneros, "Rock");
     listaGeneros = inserir_genero(listaGeneros, "Pop");
-    
+
     Genero *rock = buscar_genero(listaGeneros, "Rock");
-    inserir_artista(rock, "Queen", "Londres", "1970-presente", "Bohemian Rhapsody", "Freddie, Brian, Roger, John", "Grammy Hall of Fame");
+    inserir_artista(rock,
+                    "Queen",
+                    "Londres",
+                    "1970-presente",
+                    "Bohemian Rhapsody",
+                    "Freddie, Brian, Roger, John",
+                    "Grammy Hall of Fame");
+
     Genero *pop = buscar_genero(listaGeneros, "Pop");
-    inserir_artista(pop, "Queen", "Londres", "1970-presente", "Radio Ga Ga", "Freddie, Brian, Roger, John", "Grammy");
+    inserir_artista(pop,
+                    "Queen",
+                    "Londres",
+                    "1970-presente",
+                    "Radio Ga Ga",
+                    "Freddie, Brian, Roger, John",
+                    "Grammy");
 
     do {
+
         printf("\n============================================\n");
-        printf("       SISTEMA DE GESTAO DE MUSICA          \n");
+        printf("      SISTEMA DE GESTAO DE MUSICAS\n");
         printf("============================================\n");
         printf(" 1. Inserir Genero\n");
-        printf(" 2. Alterar Genero\n");
-        printf(" 3. Remover Genero\n");
-        printf(" 4. Inserir Artista em um Genero\n");
-        printf(" 5. Alterar Artista\n");
-        printf(" 6. Remover Artista\n");
-        printf(" 7. Listar todos os Generos\n");
-        printf(" 8. Listar Artistas de um Genero\n");
-        printf(" 9. Listar TODOS os Artistas\n");
-        printf("10. Filtrar Artistas por Cidade\n");
-        printf("11. Buscar Genero por Nome\n");
-        printf("12. Buscar Artista Globalmente\n");
-        printf("13. Contar total de Generos\n");
-        printf("14. Exibir quantidade de Artistas por Genero\n");
-        printf("15. Exibir Genero com menor quantidade de Artistas\n");
-        printf("16. Identificar Artistas em multiplos Generos\n");
+        printf(" 2. Buscar Genero\n");
+        printf(" 3. Alterar Genero\n");
+        printf(" 4. Remover Genero\n");
+        printf(" 5. Listar Generos\n");
+        printf(" 6. Contar Generos\n");
+        printf(" 7. Inserir Artista\n");
+        printf(" 8. Buscar Artista\n");
+        printf(" 9. Alterar Artista\n");
+        printf("10. Remover Artista\n");
+        printf("11. Listar Artistas de um Genero\n");
+        printf("12. Contar Artistas de um Genero\n");
+        printf("13. Listar Todos os Artistas\n");
+        printf("14. Filtrar Artistas por Cidade\n");
+        printf("15. Quantidade de Artistas por Genero\n");
+        printf("16. Genero com Menor Quantidade de Artistas\n");
+        printf("17. Identificar Artistas em Multiplos Generos\n");
         printf(" 0. Sair\n");
         printf("============================================\n");
-        printf("Escolha uma opcao: ");
-        
-        if (scanf("%d", &opcao) != 1) {
+        printf("Opcao: ");
+
+        if (scanf("%d", &opcao) != 1)
             opcao = -1;
-        }
 
         switch (opcao) {
             case 1:
-                printf("\n--- INSERIR GÊNERO ---\n");
-                printf("Nome do gênero: ");
+                printf("\n--- INSERIR GENERO ---\n");
+                printf("Nome do genero: ");
                 scanf(" %[^\n]", nomeGen);
                 listaGeneros = inserir_genero(listaGeneros, nomeGen);
                 break;
 
             case 2:
-                printf("\n--- ALTERAR GÊNERO ---\n");
-                printf("Nome atual do gênero: ");
+                printf("\n--- BUSCAR GENERO ---\n");
+                printf("Nome do genero: ");
                 scanf(" %[^\n]", nomeGen);
-                printf("Novo nome do gênero: ");
-                scanf(" %[^\n]", novoNomeGen);
-                alterarGenero(listaGeneros, nomeGen, novoNomeGen);
+
+                genEncontrado = buscar_genero(listaGeneros, nomeGen);
+
+                if (genEncontrado != NULL)
+                    printf("Genero encontrado: %s\n", genEncontrado->nome);
+                else
+                    printf("Genero nao encontrado.\n");
                 break;
 
             case 3:
-                printf("\n--- REMOVER GÊNERO ---\n");
-                printf("Nome do gênero a remover: ");
+                printf("\n--- ALTERAR GENERO ---\n");
+                printf("Nome atual: ");
                 scanf(" %[^\n]", nomeGen);
-                removerGenero(&listaGeneros, nomeGen);
+                printf("Novo nome: ");
+                scanf(" %[^\n]", novoNomeGen);
+
+                alterarGenero(listaGeneros, nomeGen, novoNomeGen);
                 break;
 
             case 4:
-                printf("\n--- INSERIR ARTISTA ---\n");
-                printf("Nome do gênero alvo: ");
+                printf("\n--- REMOVER GENERO ---\n");
+                printf("Nome do genero: ");
                 scanf(" %[^\n]", nomeGen);
-                genEncontrado = buscar_genero(listaGeneros, nomeGen);
-                
-                if (genEncontrado != NULL) {
-                    printf("Nome do artista: ");
-                    scanf(" %[^\n]", nomeArt);
-                    printf("Cidade de origem: ");
-                    scanf(" %[^\n]", cidade);
-                    printf("Período de atuação: ");
-                    scanf(" %[^\n]", periodo);
-                    printf("Principais obras: ");
-                    scanf(" %[^\n]", obras);
-                    printf("Integrantes: ");
-                    scanf(" %[^\n]", integrantes);
-                    printf("Premiações: ");
-                    scanf(" %[^\n]", premiacoes);
 
-                    inserir_artista_no_genero(genEncontrado, nomeArt, cidade, periodo, obras, integrantes, premiacoes);
-                } else {
-                    printf("Erro: Gênero não encontrado.\n");
-                }
+                removerGenero(&listaGeneros, nomeGen);
                 break;
 
             case 5:
-                printf("\n--- ALTERAR ARTISTA ---\n");
-                printf("Gênero do artista: ");
-                scanf(" %[^\n]", nomeGen);
-                genEncontrado = buscar_genero(listaGeneros, nomeGen);
-                
-                if (genEncontrado != NULL) {
-                    printf("Nome atual do artista: ");
-                    scanf(" %[^\n]", nomeArt);
-                    printf("Novo nome: ");
-                    scanf(" %[^\n]", novoNomeArt);
-                    printf("Nova cidade: ");
-                    scanf(" %[^\n]", cidade);
-                    printf("Novo período: ");
-                    scanf(" %[^\n]", periodo);
-                    printf("Novas obras: ");
-                    scanf(" %[^\n]", obras);
-                    printf("Novos integrantes: ");
-                    scanf(" %[^\n]", integrantes);
-                    printf("Novas premiações: ");
-                    scanf(" %[^\n]", premiacoes);
-
-                    alterarArtista(genEncontrado, nomeArt, novoNomeArt, cidade, periodo, obras, integrantes, premiacoes);
-                } else {
-                    printf("Erro: Gênero não encontrado.\n");
-                }
+                printf("\n--- LISTA DE GENEROS ---\n");
+                imprimirGeneros(listaGeneros);
                 break;
 
             case 6:
-                printf("\n--- REMOVER ARTISTA ---\n");
-                printf("Gênero do artista: ");
-                scanf(" %[^\n]", nomeGen);
-                genEncontrado = buscar_genero(listaGeneros, nomeGen);
-                
-                if (genEncontrado != NULL) {
-                    printf("Nome do artista a remover: ");
-                    scanf(" %[^\n]", nomeArt);
-                    removerArtista(genEncontrado, nomeArt);
-                } else {
-                    printf("Erro: Gênero não encontrado.\n");
-                }
+                printf("\nTotal de generos cadastrados: %d\n",
+                       contarGeneros(listaGeneros));
                 break;
 
             case 7:
-                printf("\n--- LISTA DE GÊNEROS ---\n");
-                imprimirGeneros(&listaGeneros);
+                printf("\n--- INSERIR ARTISTA ---\n");
+                printf("Genero: ");
+                scanf(" %[^\n]", nomeGen);
+
+                genEncontrado = buscar_genero(listaGeneros, nomeGen);
+
+                if (genEncontrado != NULL) {
+
+                    printf("Nome: ");
+                    scanf(" %[^\n]", nomeArt);
+
+                    printf("Cidade de origem: ");
+                    scanf(" %[^\n]", cidade);
+
+                    printf("Periodo de atuacao: ");
+                    scanf(" %[^\n]", periodo);
+
+                    printf("Principais obras: ");
+                    scanf(" %[^\n]", obras);
+
+                    printf("Integrantes: ");
+                    scanf(" %[^\n]", integrantes);
+
+                    printf("Premiacoes: ");
+                    scanf(" %[^\n]", premiacoes);
+
+                    inserir_artista_no_genero(genEncontrado,
+                                              nomeArt,
+                                              cidade,
+                                              periodo,
+                                              obras,
+                                              integrantes,
+                                              premiacoes);
+                } else {
+                    printf("Genero nao encontrado.\n");
+                }
+
                 break;
 
             case 8:
-                printf("\n--- LISTAR ARTISTAS DE UM GÊNERO ---\n");
-                printf("Nome do gênero: ");
-                scanf(" %[^\n]", nomeGen);
-                genEncontrado = buscar_genero(listaGeneros, nomeGen);
-                if (genEncontrado != NULL) {
-                    listarArtistas(genEncontrado);
-                } else {
-                    printf("Erro: Gênero não encontrado.\n");
-                }
+                printf("\n--- BUSCAR ARTISTA ---\n");
+                printf("Nome do artista: ");
+                scanf(" %[^\n]", nomeArt);
+
+                buscar_artista(listaGeneros, nomeArt);
                 break;
 
             case 9:
+                printf("\n--- ALTERAR ARTISTA ---\n");
+                printf("Genero do artista: ");
+                scanf(" %[^\n]", nomeGen);
+
+                genEncontrado = buscar_genero(listaGeneros, nomeGen);
+
+                if (genEncontrado != NULL) {
+
+                    printf("Nome atual: ");
+                    scanf(" %[^\n]", nomeArt);
+
+                    printf("Novo nome: ");
+                    scanf(" %[^\n]", novoNomeArt);
+
+                    printf("Nova cidade: ");
+                    scanf(" %[^\n]", cidade);
+
+                    printf("Novo periodo: ");
+                    scanf(" %[^\n]", periodo);
+
+                    printf("Novas obras: ");
+                    scanf(" %[^\n]", obras);
+
+                    printf("Novos integrantes: ");
+                    scanf(" %[^\n]", integrantes);
+
+                    printf("Novas premiacoes: ");
+                    scanf(" %[^\n]", premiacoes);
+
+                    alterarArtista(genEncontrado,
+                                    nomeArt,
+                                    novoNomeArt,
+                                    cidade,
+                                    periodo,
+                                    obras,
+                                    integrantes,
+                                    premiacoes);
+
+                } else {
+                    printf("Genero nao encontrado.\n");
+                }
+
+                break;
+
+            case 10:
+                printf("\n--- REMOVER ARTISTA ---\n");
+                printf("Genero do artista: ");
+                scanf(" %[^\n]", nomeGen);
+
+                genEncontrado = buscar_genero(listaGeneros, nomeGen);
+
+                if (genEncontrado != NULL) {
+
+                    printf("Nome do artista: ");
+                    scanf(" %[^\n]", nomeArt);
+
+                    removerArtista(genEncontrado, nomeArt);
+
+                } else {
+                    printf("Genero nao encontrado.\n");
+                }
+
+                break;
+
+            case 11:
+                printf("\n--- LISTAR ARTISTAS DO GENERO ---\n");
+                printf("Nome do genero: ");
+                scanf(" %[^\n]", nomeGen);
+
+                genEncontrado = buscar_genero(listaGeneros, nomeGen);
+
+                if (genEncontrado != NULL)
+                    listarArtistas(genEncontrado);
+                else
+                    printf("Genero nao encontrado.\n");
+
+                break;
+
+            case 12:
+                printf("\n--- CONTAR ARTISTAS DO GENERO ---\n");
+                printf("Nome do genero: ");
+                scanf(" %[^\n]", nomeGen);
+
+                genEncontrado = buscar_genero(listaGeneros, nomeGen);
+
+                if (genEncontrado != NULL)
+                    printf("Quantidade de artistas: %d\n",
+                           contarArtistas(genEncontrado));
+                else
+                    printf("Genero nao encontrado.\n");
+
+                break;
+
+            case 13:
                 printf("\n--- TODOS OS ARTISTAS CADASTRADOS ---\n");
                 listarTodosArtistas(listaGeneros);
                 break;
 
-            case 10:
+            case 14:
                 printf("\n--- FILTRAR ARTISTAS POR CIDADE ---\n");
                 printf("Nome da cidade: ");
                 scanf(" %[^\n]", cidade);
+
                 filtrarArtistasPorCidade(listaGeneros, cidade);
                 break;
 
-            case 11:
-                printf("\n--- BUSCAR GÊNERO ---\n");
-                printf("Nome do gênero: ");
-                scanf(" %[^\n]", nomeGen);
-                genEncontrado = buscar_genero(listaGeneros, nomeGen);
-                if (genEncontrado != NULL) {
-                    printf("Gênero encontrado: %s\n", genEncontrado->nome);
-                } else {
-                    printf("Gênero não encontrado.\n");
-                }
-                break;
-
-            case 12:
-                printf("\n--- BUSCAR ARTISTA GLOBALMENTE ---\n");
-                printf("Nome do artista: ");
-                scanf(" %[^\n]", nomeArt);
-                buscar_artista(listaGeneros, nomeArt);
-                break;
-
-            case 13:
-                printf("\nTotal de gêneros cadastrados: %d\n", contarGeneros(&listaGeneros));
-                break;
-
-            case 14:
-                printf("\n--- ARTISTAS POR GÊNERO ---\n");
+            case 15:
+                printf("\n--- QUANTIDADE DE ARTISTAS POR GENERO ---\n");
                 artistasPorGenero(listaGeneros);
                 break;
 
-            case 15:
-                printf("\n--- GÊNERO COM MENOR QUANTIDADE DE ARTISTAS ---\n");
+            case 16:
+                printf("\n--- GENERO COM MENOR QUANTIDADE DE ARTISTAS ---\n");
                 generoComMenosArtistas(listaGeneros);
                 break;
 
-            case 16:
+            case 17:
+                printf("\n--- ARTISTAS EM MULTIPLOS GENEROS ---\n");
                 identificar_artistas_multi_genero(listaGeneros);
                 break;
 
@@ -213,7 +290,7 @@ int main() {
                 break;
 
             default:
-                printf("\nOpção inválida! Tente novamente.\n");
+                printf("\nOpcao invalida! Tente novamente.\n");
                 break;
         }
 
