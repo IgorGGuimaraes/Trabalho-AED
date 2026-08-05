@@ -1,6 +1,8 @@
 #ifndef _ARTISTA_H
 #define _ARTISTA_H
 
+typedef struct Genero Genero;
+
 typedef struct Artista {
     char nome[100];
     char cidade_origem[100];
