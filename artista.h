@@ -1,5 +1,5 @@
-#ifndef _LISTA_H
-#define _LISTA_H
+#ifndef _ARTISTA_H
+#define _ARTISTA_H
 
 typedef struct Artista {
     char nome[100];
