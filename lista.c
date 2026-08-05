@@ -3,11 +3,46 @@
 #include <string.h>
 #include "lista.h"
 
-//funções rhuan
 
+// OPERAÇÕES DA LISTA PRINCIPAL
+
+// Inicializar lista de gêneros
+Genero *iniciarGenero() {
+    return NULL;
+}
+
+// Inserir gênero
+Genero* inserir_genero(Genero *lista_generos, const char *nome_genero) {
+    Genero *novo = (Genero*) malloc(sizeof(Genero));
+    if (!novo) {
+        printf("Erro ao alocar memória!\n");
+        return lista_generos;
+    }
+    strcpy(novo->nome, nome_genero);
+    novo->artistas = NULL;
+    novo->ant = NULL;
+    novo->prox = lista_generos;
+    if (lista_generos != NULL)
+        lista_generos->ant = novo;
+
+    printf("Gênero '%s' inserido com sucesso!\n", nome_genero);
+    return novo;
+}
+
+// Buscar gênero
+Genero* buscar_genero(Genero *lista, const char *nome_genero) {
+    Genero *atual = lista;
+    while (atual != NULL) {
+        if (strcasecmp(atual->nome, nome_genero) == 0)
+            return atual;
+        atual = atual->prox;
+    }
+    return NULL;
+}
+
+// Alterar gênero
 void alterarGenero(Genero *g, char nomeAtual[], char novoNome[]) {
     Genero *atual = g;
-
     while (atual != NULL) {
         if (strcmp(atual->nome, nomeAtual) == 0) {
             strcpy(atual->nome, novoNome);
@@ -16,54 +51,188 @@ void alterarGenero(Genero *g, char nomeAtual[], char novoNome[]) {
         }
         atual = atual->prox;
     }
-
     printf("Genero nao encontrado.\n");
 }
 
+// Remover gênero
 int removerGenero(Genero **g, char nome[]) {
     Genero *atual = *g;
-
-    while (atual != NULL && strcmp(atual->nome, nome) != 0) {
+    while (atual != NULL && strcmp(atual->nome, nome) != 0)
         atual = atual->prox;
-    }
-
     if (atual == NULL) {
         printf("Genero nao encontrado.\n");
         return 0;
     }
-
     if (atual->artistas != NULL) {
         printf("Nao e possivel remover um genero que possui artistas cadastrados.\n");
         return 0;
     }
-
-    // Único elemento
     if (atual->ant == NULL && atual->prox == NULL) {
         *g = NULL;
-    }
-
-    // Primeiro elemento
-    else if (atual->ant == NULL) {
+    } else if (atual->ant == NULL) {
         *g = atual->prox;
         atual->prox->ant = NULL;
-    }
-
-    // Último elemento
-    else if (atual->prox == NULL) {
+    } else if (atual->prox == NULL) {
         atual->ant->prox = NULL;
-    }
-
-    // Elemento do meio
-    else {
+    } else {
         atual->ant->prox = atual->prox;
         atual->prox->ant = atual->ant;
     }
-
     free(atual);
-
     printf("Genero removido com sucesso!\n");
     return 1;
 }
+
+// Listar gêneros
+void imprimirGeneros(Genero *g) {
+    Genero *atual = g;
+    if (atual == NULL) {
+        printf("Lista de generos vazia\n");
+        return;
+    }
+    while (atual != NULL) {
+        printf("Genero: %s\n", atual->nome);
+        Artista *artAtual = atual->artistas;
+        if (artAtual == NULL) {
+            printf("Nenhum artista neste genero.\n");
+        } else {
+            while (artAtual != NULL) {
+                printf("Artista: %s\n", artAtual->nome);
+                artAtual = artAtual->prox;
+            }
+        }
+        atual = atual->prox;
+    }
+}
+
+// Contar gêneros
+int contarGeneros(Genero *g) {
+    int count = 0;
+    Genero *atual = g;
+
+    while (atual != NULL) {
+        count++;
+        atual = atual->prox;
+    }
+    return count;
+}
+
+// OPERAÇÕES DA LISTA SECUNDÁRIA
+
+// Inserir um novo elemento associado a um elemento da lista principal
+
+void inserir_artista(Genero *genero, const char *nome, const char *cidade,
+                     const char *periodo, const char *obras,
+                     const char *integrantes, const char *premiacoes) {
+    if (!genero) {
+        printf("Genero invalido!\n");
+        return;
+    }
+    Artista *novo = (Artista*) malloc(sizeof(Artista));
+    if (!novo) {
+        printf("Erro ao alocar memoria!\n");
+        return;
+    }
+
+    strcpy(novo->nome, nome);
+    strcpy(novo->cidade_origem, cidade);
+    strcpy(novo->periodo_atuacao, periodo);
+    strcpy(novo->principais_obras, obras);
+    strcpy(novo->integrantes, integrantes);
+    strcpy(novo->premiacoes, premiacoes);
+
+    novo->ant = NULL;
+    novo->prox = genero->artistas;
+    if (genero->artistas != NULL) {
+        genero->artistas->ant = novo;
+    }
+    genero->artistas = novo;
+    printf("Artista '%s' adicionado ao genero '%s'!\n", nome, genero->nome);
+}
+
+int inserir_artista_no_genero(Genero *genero_alvo,
+                              const char *nome,
+                              const char *cidade,
+                              const char *periodo,
+                              const char *obras,
+                              const char *integrantes,
+                              const char *premiacoes) {
+
+    if (genero_alvo == NULL) {
+        printf("Erro: O genero especificado nao existe.\n");
+        return 0;
+    }
+    Artista *novo = (Artista*) malloc(sizeof(Artista));
+    if (novo == NULL) {
+        printf("Erro: Falha na alocacao de memoria para o artista.\n");
+        return 0;
+    }
+
+    strncpy(novo->nome, nome, sizeof(novo->nome) - 1);
+    strncpy(novo->cidade_origem, cidade, sizeof(novo->cidade_origem) - 1);
+    strncpy(novo->periodo_atuacao, periodo, sizeof(novo->periodo_atuacao) - 1);
+    strncpy(novo->principais_obras, obras, sizeof(novo->principais_obras) - 1);
+    strncpy(novo->integrantes, integrantes, sizeof(novo->integrantes) - 1);
+    strncpy(novo->premiacoes, premiacoes, sizeof(novo->premiacoes) - 1);
+
+    novo->ant = NULL;
+    novo->prox = genero_alvo->artistas;
+    if (genero_alvo->artistas != NULL) {
+        genero_alvo->artistas->ant = novo;
+    }
+    genero_alvo->artistas = novo;
+    printf("Sucesso: Artista '%s' inserido no genero '%s'.\n",
+           nome, genero_alvo->nome);
+    return 1;
+}
+
+// Buscar elemento da lista secundária
+
+Artista* buscar_artista(Genero *lista_generos, const char *nome_artista) {
+    Genero *g = lista_generos;
+    int encontrado = 0;
+    while (g != NULL) {
+        Artista *a = g->artistas;
+        while (a != NULL) {
+            if (strcasecmp(a->nome, nome_artista) == 0) {
+                printf("\n=== Artista Encontrado ===\n");
+                printf("Genero: %s\n", g->nome);
+                printf("Nome: %s\n", a->nome);
+                printf("Origem: %s\n", a->cidade_origem);
+                printf("Atuacao: %s\n", a->periodo_atuacao);
+                printf("Obras: %s\n", a->principais_obras);
+                printf("Integrantes: %s\n", a->integrantes);
+                printf("Premiacoes: %s\n", a->premiacoes);
+                printf("==========================\n");
+                encontrado = 1;
+            }
+            a = a->prox;
+        }
+        g = g->prox;
+    }
+    if (!encontrado) {
+        printf("\nArtista '%s' nao foi encontrado em nenhum genero.\n",
+               nome_artista);
+    }
+    return NULL;
+}
+
+Artista* buscar_artista_no_genero(Genero *genero_alvo,
+                                  const char *nome_artista) {
+    if (genero_alvo == NULL) {
+        printf("Genero invalido para busca.\n");
+        return NULL;
+    }
+    Artista *atual = genero_alvo->artistas;
+    while (atual != NULL) {
+        if (strcasecmp(atual->nome, nome_artista) == 0)
+            return atual;
+        atual = atual->prox;
+    }
+    return NULL;
+}
+
+// Alterar dados do artista
 
 void alterarArtista(Genero *genero,
                     char nomeAtual[],
@@ -73,9 +242,7 @@ void alterarArtista(Genero *genero,
                     char obras[],
                     char integrantes[],
                     char premiacoes[]) {
-
     Artista *artista = buscar_artista_no_genero(genero, nomeAtual);
-
     if (artista == NULL) {
         printf("Artista nao encontrado.\n");
         return;
@@ -87,425 +254,91 @@ void alterarArtista(Genero *genero,
     strcpy(artista->principais_obras, obras);
     strcpy(artista->integrantes, integrantes);
     strcpy(artista->premiacoes, premiacoes);
-
     printf("Artista alterado com sucesso!\n");
 }
 
-int removerArtista(Genero *genero, char nome[]) {
+// Remover artista
 
+int removerArtista(Genero *genero, char nome[]) {
     if (genero == NULL) {
         return 0;
     }
-
     Artista *atual = genero->artistas;
-
     while (atual != NULL && strcmp(atual->nome, nome) != 0) {
         atual = atual->prox;
     }
-
     if (atual == NULL) {
         printf("Artista nao encontrado.\n");
         return 0;
     }
-
-    // Único artista
     if (atual->ant == NULL && atual->prox == NULL) {
         genero->artistas = NULL;
-    }
-
-    // Primeiro artista
-    else if (atual->ant == NULL) {
+    } else if (atual->ant == NULL) {
         genero->artistas = atual->prox;
         atual->prox->ant = NULL;
-    }
-
-    // Último artista
-    else if (atual->prox == NULL) {
+    } else if (atual->prox == NULL) {
         atual->ant->prox = NULL;
-    }
-
-    // Artista do meio
-    else {
+    } else {
         atual->ant->prox = atual->prox;
         atual->prox->ant = atual->ant;
     }
-
     free(atual);
-
     printf("Artista removido com sucesso!\n");
     return 1;
 }
 
-// Contabilizar quantos artistas existem em cada gênero
-void artistasPorGenero(Genero *lista) {
-
-    Genero *atual = lista;
-
-    if (atual == NULL) {
-        printf("Lista de generos vazia.\n");
-        return;
-    }
-
-    while (atual != NULL) {
-
-        printf("\nGenero: %s\n", atual->nome);
-        printf("Quantidade de artistas: %d\n", contarArtistas(atual));
-
-        atual = atual->prox;
-    }
-}
-// Encontrar o gênero com menos artistas
-void generoComMenosArtistas(Genero *lista) {
-
-    if (lista == NULL) {
-        printf("Lista de generos vazia.\n");
-        return;
-    }
-
-    Genero *menor = lista;
-    Genero *atual = lista->prox;
-
-    while (atual != NULL) {
-
-        if (contarArtistas(atual) < contarArtistas(menor)) {
-            menor = atual;
-        }
-
-        atual = atual->prox;
-    }
-
-    printf("\nGenero com menor quantidade de artistas:\n");
-    printf("Nome: %s\n", menor->nome);
-    printf("Quantidade de artistas: %d\n", contarArtistas(menor));
-}
-
-//Funçoes do Igor
-
-Genero *iniciarGenero() {
-    return NULL;
-}
-
-void imprimirGeneros(Genero *g) {
-    Genero *atual = g;
-    if(atual == NULL) {
-        printf("Lista de generos vazia\n");
-        return;
-    }
-    while(atual != NULL) {
-        printf("Genero: %s", atual->nome);
-        Artista *artAtual = atual->artistas;
-        
-        if(artAtual == NULL) {
-            printf("Nenhum artista no gênero atual\n");
-        } else {
-            while(artAtual != NULL) {
-                printf("Artista atual: %s", artAtual->nome);
-                artAtual = artAtual->prox;
-            }
-        }
-        atual = atual->prox;
-    }
-}
-
-int contarGeneros(Genero *g) {
-    int count = 0;
-    Genero *atual = g;
-    while(atual != NULL) {
-        count++;
-        atual = atual->prox;
-    }
-    return count;
-}
-
+// Listar todos os artistas de um gênero
 void listarArtistas(Genero *g) {
-    if(genero == NULL) {
-        printf("Gênero inválido");
+    if (g == NULL) {
+        printf("Genero invalido.\n");
         return;
     }
-    
     Artista *atual = g->artistas;
-    int num = 0;
-    
-    while(atual != NULL) {
-        printf("Artista nº %d : %s", num++, atual->nome);
+    int num = 1;
+    while (atual != NULL) {
+
+        printf("\nArtista %d\n", num++);
+        printf("Nome: %s\n", atual->nome);
         printf("Cidade de Origem: %s\n", atual->cidade_origem);
-        printf("Período de Atuação: %s\n", atual->periodo_atuacao);
+        printf("Periodo de Atuacao: %s\n", atual->periodo_atuacao);
         printf("Principais Obras: %s\n", atual->principais_obras);
         printf("Integrantes: %s\n", atual->integrantes);
-        printf("Premiações: %s\n", atual->premiacoes);
+        printf("Premiacoes: %s\n", atual->premiacoes);
 
-		num = 1;
         atual = atual->prox;
     }
-	if(num == 0){
-		printf("Nenhum artista encontrado");
+    if (num == 1) {
+        printf("Nenhum artista encontrado.\n");
+    }
 }
 
+// Contar artistas
 int contarArtistas(Genero *g) {
-    if(Genero == NULL) {
+
+    if (g == NULL) {
         return 0;
     }
     int count = 0;
     Artista *atual = g->artistas;
-    while(atual != NULL) {
+    while (atual != NULL) {
         count++;
         atual = atual->prox;
     }
     return count;
 }
 
-//Listar todos os Artistas (elementos da lista secundária)
+// CONSULTAS E CRUZAMENTOS
 
-void listarTodosArtistas(Genero *g){
-    Genero *genAtual = g;
-    int encontrou = 0;
-    
-    if(genAtual == NULL) {
-        printf("Lista vazia\n");
-        return;
-    }
-    
-    printf("Artistas:\n");
-    while(genAtual != NULL) {
-		Artista *artAtual = genAtual->artistas;
-			
-		while(artAtual != NULL) {
-			printf("Nome: %s\n", art_atual->nome);
-       		 printf("Genero: %s\n", gen_atual->nome);
-        	printf("Cidade de Origem: %s\n", art_atual->cidade_origem);
-	        printf("Periodo: %s\n", art_atual->periodo_atuacao);
-        	printf("Principais Obras: %s\n", art_atual->principais_obras);
-        	printf("Integrantes: %s\n", art_atual->integrantes);
-        	printf("Premiacoes: %s\n", art_atual->premiacoes);
-
-        	encontrou = 1;
-        	artAtual = artAtual->prox;
-		}
-
-		genAtual = genAtual->prox;
-        
-    }
-    
-    if(encontrou == 0){
-        printf("Nenhum artista encontrado\n");
-    }
-}
-
-//Filtrar elementos da lista secundária por atributos
-
-void filtrarArtistasPorCidade(Genero *g, char *cidade) {
-    Genero *genAtual = g;
-    int encontrou = 0;
-    
-    if(genAtual == NULL) {
-        printf("Lista vazia\n");
-        return;
-    }
-    
-    printf("Artistas da cidade %s", genAtual->cidade_origem);
-    while(genAtual != NULL) {
-        
-        Artista artAtual = genAtual->artistas;
-        
-        while(artAtual != NULL) {
-            if(strcmp(artAtual->cidade_origem, cidade) == 0) {
-                printf("Nome: %s\n", art_atual->nome);
-                printf("Genero: %s\n", gen_atual->nome);
-                printf("Periodo: %s\n", art_atual->periodo_atuacao);
-                printf("Principais Obras: %s\n", art_atual->principais_obras);
-                printf("Integrantes: %s\n", art_atual->integrantes);
-                printf("Premiacoes: %s\n", art_atual->premiacoes);
-                printf("-------------------------\n");
-                
-                encontrou = 1;
-            }
-            artAtual = artAtual->prox;
-        }
-        
-        genAtual = genAtual->prox;
-    }
-    
-    if(encontrou == 0) {
-        printf("Não há nenhum artista desta cidade\n");
-    }
-    
-}
-
-//---------------FUNÇÕES LAURA-----------------
-
-Genero* inserir_genero(Genero *lista_generos, const char *nome_genero) {
-	Genero *novo = (Genero*) malloc(sizeof(Genero));
-	if (!novo) {
-		printf("Erro ao alocar memória!\n");
-		return lista_generos;
-	}
-
-	strcpy(novo->nome, nome_genero);
-	novo->artistas = NULL;
-	novo->ant = NULL;
-	novo->prox = lista_generos;
-
-	if (lista_generos != NULL) {
-		lista_generos->ant = novo;
-	}
-
-	printf("Gênero '%s' inserido com sucesso!\n", nome_genero);
-	return novo;
-}
-
-//---------------------------------------------------------------
-
-void inserir_artista(Genero *genero, const char *nome, const char *cidade, 
-                     const char *periodo, const char *obras, 
-                     const char *integrantes, const char *premiacoes) {
-    if (!genero) {
-        printf("Gênero inválido!\n");
-        return;
-    }
-
-    Artista *novo = (Artista*) malloc(sizeof(Artista));
-    if (!novo) {
-        printf("Erro ao alocar memória!\n");
-        return;
-    }
-
-    strcpy(novo->nome, nome);
-    strcpy(novo->cidade_origem, cidade);
-    strcpy(novo->periodo_atuacao, periodo);
-    strcpy(novo->principais_obras, obras);
-    strcpy(novo->integrantes, integrantes);
-    strcpy(novo->premiacoes, premiacoes);
-
-    // Inserção no início da sublista de artistas
-    novo->ant = NULL;
-    novo->prox = genero->artistas;
-
-    if (genero->artistas != NULL) {
-        genero->artistas->ant = novo;
-    }
-
-    genero->artistas = novo;
-    printf("Artista '%s' adicionado ao gênero '%s'!\n", nome, genero->nome);
-}
-
-//---------------------------------------------------------------
-
-Genero* buscar_genero(Genero *lista, const char *nome_genero) {
-	Genero *atual = lista;
-	while (atual != NULL) {
-		if (strcasecmp(atual->nome, nome_genero) == 0) {
-			return atual;
-		}
-		atual = atual->prox;
-	}
-	return NULL;
-}
-
-
-Artista* buscar_artista(Genero *lista_generos, const char *nome_artista) {
-	Genero *g = lista_generos;
-	int encontrado = 0;
-
-	while (g != NULL) {
-		Artista *a = g->artistas;
-		while (a != NULL) {
-			if (strcasecmp(a->nome, nome_artista) == 0) {
-				printf("\n=== Artista Encontrado ===\n");
-				printf("Gênero: %s\n", g->nome);
-				printf("Nome: %s\n", a->nome);
-				printf("Origem: %s\n", a->cidade_origem);
-				printf("Atuação: %s\n", a->periodo_atuacao);
-				printf("Obras: %s\n", a->principais_obras);
-				printf("Integrantes: %s\n", a->integrantes);
-				printf("Premiações: %s\n", a->premiacoes);
-				printf("==========================\n");
-				encontrado = 1;
-			}
-			a = a->prox;
-		}
-		g = g->prox;
-	}
-
-	if (!encontrado) {
-		printf("\nArtista '%s' não foi encontrado em nenhum gênero.\n", nome_artista);
-	}
-}
-//-----------------------------------Lista secundária-Laura-----------------------------------------------
-int inserir_artista_no_genero(Genero *genero_alvo, 
-                             const char *nome, 
-                             const char *cidade, 
-                             const char *periodo, 
-                             const char *obras, 
-                             const char *integrantes, 
-                             const char *premiacoes) {
-    
-    if (genero_alvo == NULL) {
-        printf("Erro: O gênero especificado não existe.\n");
-        return 0; 
-    }
-
-    
-    Artista *novo = (Artista*) malloc(sizeof(Artista));
-    if (novo == NULL) {
-        printf("Erro: Falha na alocação de memória para o artista.\n");
-        return 0; 
-    }
-
-    
-    strncpy(novo->nome, nome, sizeof(novo->nome) - 1);
-    strncpy(novo->cidade_origem, cidade, sizeof(novo->cidade_origem) - 1);
-    strncpy(novo->periodo_atuacao, periodo, sizeof(novo->periodo_atuacao) - 1);
-    strncpy(novo->principais_obras, obras, sizeof(novo->principais_obras) - 1);
-    strncpy(novo->integrantes, integrantes, sizeof(novo->integrantes) - 1);
-    strncpy(novo->premiacoes, premiacoes, sizeof(novo->premiacoes) - 1);
-
-    
-    novo->ant = NULL;
-    novo->prox = genero_alvo->artistas; 
-
-
-    if (genero_alvo->artistas != NULL) {
-        genero_alvo->artistas->ant = novo;
-    }
-
-    
-    genero_alvo->artistas = novo;
-
-    printf("Sucesso: Artista '%s' inserido no gênero '%s'.\n", nome, genero_alvo->nome);
-    return 1; 
-}
-//---------------------------------------------------------------------------------------
-
-Artista* buscar_artista_no_genero(Genero *genero_alvo, const char *nome_artista) {
-    if (genero_alvo == NULL) {
-        printf("Gênero inválido para busca.\n");
-        return NULL;
-    }
-
-    Artista *atual = genero_alvo->artistas;
-
-    
-    while (atual != NULL) {
-        if (strcasecmp(atual->nome, nome_artista) == 0) {
-            return atual; 
-        }
-        atual = atual->prox;
-    }
-
-    return NULL; 
-}
-//--------------------------------------------------------------------------------------
+// Localizar um artista a partir de qualquer gênero
 
 Artista* buscar_artista_global(Genero *lista_generos, const char *nome_artista, Genero **genero_encontrado) {
     Genero *g_atual = lista_generos;
-
     while (g_atual != NULL) {
         Artista *a_atual = g_atual->artistas;
-        
         while (a_atual != NULL) {
             if (strcasecmp(a_atual->nome, nome_artista) == 0) {
                 if (genero_encontrado != NULL) {
-                    *genero_encontrado = g_atual; 
+                    *genero_encontrado = g_atual;
                 }
                 return a_atual;
             }
@@ -513,102 +346,180 @@ Artista* buscar_artista_global(Genero *lista_generos, const char *nome_artista, 
         }
         g_atual = g_atual->prox;
     }
-
-    return NULL; 
+    return NULL;
 }
-//--------------------------------------------------------------------------------
+
+// Localizar um artista partindo de qualquer nó da lista principal
 
 Artista* buscar_artista_qualquer(Genero *no_qualquer, const char *nome_artista, Genero **genero_encontrado) {
-    if (no_qualquer == NULL) return NULL;
-
-    Genero *inicio_generos = no_qualquer;
-    while (inicio_generos->ant != NULL) {
-        inicio_generos = inicio_generos->ant;
-    }
-
-    Genero *g_atual = inicio_generos;
-    while (g_atual != NULL) {
-        Artista *a_atual = g_atual->artistas;
-        
-        while (a_atual != NULL) {
-            if (strcasecmp(a_atual->nome, nome_artista) == 0) {
-                if (genero_encontrado != NULL) {
-                    *genero_encontrado = g_atual; // Retorna também em qual gênero ele está
-                }
-                return a_atual;
-            }
-            a_atual = a_atual->prox;
-        }
-        g_atual = g_atual->prox;
-    }
-
-    return NULL; 
-}
-//-------------------------------------------------------------------------------
-
-int ja_impresso(char nomes_impressos[][100], int qtd, const char *nome) {
-    for (int i = 0; i < qtd; i++) {
-        if (strcasecmp(nomes_impressos[i], nome) == 0) return 1;
-    }
-    return 0;
-}
-
-void identificar_artistas_multi_genero(Genero *no_qualquer) {
-    if (no_qualquer == NULL) {
-        printf("Lista vazia.\n");
-        return;
-    }
-
+    if (no_qualquer == NULL)
+        return NULL;
     Genero *inicio = no_qualquer;
     while (inicio->ant != NULL) {
         inicio = inicio->ant;
     }
-
-    char impressos[100][100]; 
-    int qtd_impressos = 0;
-    int encontrou_duplicados = 0;
-
-    printf("\n=== ARTISTAS ASSOCIADOS A MAIS DE UM GÊNERO ===\n");
-
-    for (Genero *g1 = inicio; g1 != NULL; g1 = g1->prox) {
-        for (Artista *a1 = g1->artistas; a1 != NULL; a1 = a1->prox) {
-
-            if (ja_impresso(impressos, qtd_impressos, a1->nome)) continue;
-
-            int contagem_generos = 0;
-            
-            for (Genero *g2 = inicio; g2 != NULL; g2 = g2->prox) {
-                for (Artista *a2 = g2->artistas; a2 != NULL; a2 = a2->prox) {
-                    if (strcasecmp(a1->nome, a2->nome) == 0) {
-                        contagem_generos++;
-                        break; 
-                    }
-                }
+    Genero *g_atual = inicio;
+    while (g_atual != NULL) {
+        Artista *a_atual = g_atual->artistas;
+        while (a_atual != NULL) {
+            if (strcasecmp(a_atual->nome, nome_artista) == 0) {
+                if (genero_encontrado != NULL)
+                    *genero_encontrado = g_atual;
+                return a_atual;
             }
-
-            if (contagem_generos > 1) {
-                encontrou_duplicados = 1;
-                printf("- '%s' está associado a %d gêneros (ex: '%s')", 
-                       a1->nome, contagem_generos, g1->nome);
-                
-                printf(" -> Gêneros: [ ");
-                for (Genero *g2 = inicio; g2 != NULL; g2 = g2->prox) {
-                    for (Artista *a2 = g2->artistas; a2 != NULL; a2 = a2->prox) {
-                        if (strcasecmp(a1->nome, a2->nome) == 0) {
-                            printf("%s ", g2->nome);
-                            break;
-                        }
-                    }
-                }
-                printf("]\n");
-
-                strcpy(impressos[qtd_impressos++], a1->nome);
-            }
+            a_atual = a_atual->prox;
         }
+        g_atual = g_atual->prox;
     }
+    return NULL;
+}
 
-    if (!encontrou_duplicados) {
-        printf("Nenhum artista foi encontrado em múltiplos gêneros.\n");
+// Listar todos os artistas
+
+void listarTodosArtistas(Genero *g) {
+
+    Genero *genAtual = g;
+    int encontrou = 0;
+    if (genAtual == NULL) {
+        printf("Lista vazia.\n");
+        return;
     }
-    printf("================================================\n");
+    printf("Artistas:\n");
+    while (genAtual != NULL) {
+        Artista *artAtual = genAtual->artistas;
+        while (artAtual != NULL) {
+
+            printf("Nome: %s\n", artAtual->nome);
+            printf("Genero: %s\n", genAtual->nome);
+            printf("Cidade de Origem: %s\n", artAtual->cidade_origem);
+            printf("Periodo: %s\n", artAtual->periodo_atuacao);
+            printf("Principais Obras: %s\n", artAtual->principais_obras);
+            printf("Integrantes: %s\n", artAtual->integrantes);
+            printf("Premiacoes: %s\n", artAtual->premiacoes);
+            printf("-------------------------\n");
+            encontrou = 1;
+            artAtual = artAtual->prox;
+        }
+        genAtual = genAtual->prox;
+    }
+    if (!encontrou) {
+        printf("Nenhum artista encontrado.\n");
+    }
+}
+
+// Filtrar artistas por cidade
+
+void filtrarArtistasPorCidade(Genero *g, char *cidade) {
+    Genero *genAtual = g;
+    int encontrou = 0;
+    if (genAtual == NULL) {
+        printf("Lista vazia.\n");
+        return;
+    }
+    printf("Artistas da cidade %s:\n", cidade);
+    while (genAtual != NULL) {
+        Artista *artAtual = genAtual->artistas;
+        while (artAtual != NULL) {
+            if (strcmp(artAtual->cidade_origem, cidade) == 0) {
+				
+                printf("Nome: %s\n", artAtual->nome);
+                printf("Genero: %s\n", genAtual->nome);
+                printf("Periodo: %s\n", artAtual->periodo_atuacao);
+                printf("Principais Obras: %s\n", artAtual->principais_obras);
+                printf("Integrantes: %s\n", artAtual->integrantes);
+                printf("Premiacoes: %s\n", artAtual->premiacoes);
+                printf("-------------------------\n");
+                encontrou = 1;
+            }
+            artAtual = artAtual->prox;
+        }
+        genAtual = genAtual->prox;
+    }
+    if (!encontrou) {
+        printf("Nao ha nenhum artista desta cidade.\n");
+    }
+}
+
+// Contabilizar quantos artistas existem em cada gênero
+
+void artistasPorGenero(Genero *g) {
+    if (g == NULL) {
+        printf("Lista vazia.\n");
+        return;
+    }
+    Genero *atual = g;
+
+    while (atual != NULL) {
+        printf("Genero: %s\n", atual->nome);
+        printf("Quantidade de artistas: %d\n\n", contarArtistas(atual));
+        atual = atual->prox;
+    }
+}
+
+// Encontrar o gênero com menor quantidade de artistas
+
+void generoComMenosArtistas(Genero *g) {
+    if (g == NULL) {
+        printf("Lista vazia.\n");
+        return;
+    }
+    Genero *menor = g;
+    int menorQtd = contarArtistas(g);
+    Genero *atual = g->prox;
+    while (atual != NULL) {
+        int qtd = contarArtistas(atual);
+        if (qtd < menorQtd) {
+            menorQtd = qtd;
+            menor = atual;
+        }
+        atual = atual->prox;
+    }
+    printf("Genero com menor quantidade de artistas:\n");
+    printf("%s (%d artistas)\n", menor->nome, menorQtd);
+}
+
+// Identificar artistas que aparecem em mais de um gênero
+
+void identificar_artistas_multi_genero(Genero *lista) {
+
+    if (lista == NULL) {
+        printf("Lista vazia.\n");
+        return;
+    }
+    char impressos[100][100];
+    int qtdImpressos = 0;
+	
+    Genero *g1 = lista;
+    while (g1 != NULL) {
+        Artista *a1 = g1->artistas;
+        while (a1 != NULL) {
+            int jaImpresso = 0;
+            for (int i = 0; i < qtdImpressos; i++) {
+                if (strcmp(impressos[i], a1->nome) == 0) {
+                    jaImpresso = 1;
+                    break;
+                }
+            }
+            if (!jaImpresso) {
+                Genero *g2 = g1->prox;
+                int repetido = 0;
+                while (g2 != NULL) {
+                    Artista *a2 = g2->artistas;
+                    while (a2 != NULL) {
+                        if (strcasecmp(a1->nome, a2->nome) == 0) {
+                            repetido = 1;
+                        }
+                        a2 = a2->prox;
+                    }
+                    g2 = g2->prox;
+                }
+                if (repetido) {
+                    printf("%s aparece em mais de um genero.\n", a1->nome);
+                    strcpy(impressos[qtdImpressos++], a1->nome);
+                }
+            }
+            a1 = a1->prox;
+        }
+        g1 = g1->prox;
+    }
 }
