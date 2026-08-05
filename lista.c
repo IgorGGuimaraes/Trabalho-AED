@@ -124,36 +124,6 @@ int contarGeneros(Genero *g) {
 // OPERAÇÕES DA LISTA SECUNDÁRIA
 
 // Inserir um novo elemento associado a um elemento da lista principal
-
-void inserir_artista(Genero *genero, const char *nome, const char *cidade,
-                     const char *periodo, const char *obras,
-                     const char *integrantes, const char *premiacoes) {
-    if (!genero) {
-        printf("Genero invalido!\n");
-        return;
-    }
-    Artista *novo = (Artista*) malloc(sizeof(Artista));
-    if (!novo) {
-        printf("Erro ao alocar memoria!\n");
-        return;
-    }
-
-    strcpy(novo->nome, nome);
-    strcpy(novo->cidade_origem, cidade);
-    strcpy(novo->periodo_atuacao, periodo);
-    strcpy(novo->principais_obras, obras);
-    strcpy(novo->integrantes, integrantes);
-    strcpy(novo->premiacoes, premiacoes);
-
-    novo->ant = NULL;
-    novo->prox = genero->artistas;
-    if (genero->artistas != NULL) {
-        genero->artistas->ant = novo;
-    }
-    genero->artistas = novo;
-    printf("Artista '%s' adicionado ao genero '%s'!\n", nome, genero->nome);
-}
-
 int inserir_artista_no_genero(Genero *genero_alvo,
                               const char *nome,
                               const char *cidade,
