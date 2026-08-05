@@ -24,6 +24,7 @@ typedef struct Genero {
 //LISTA PRINCIPAL
 
 Genero *iniciarGenero();
+void carregarArquivo(Genero **lista);
 Genero *inserir_genero(Genero *lista_generos, const char *nome_genero);
 Genero *buscar_genero(Genero *lista, const char *nome_genero);
 void alterarGenero(Genero *g, char nomeAtual[], char novoNome[]);
