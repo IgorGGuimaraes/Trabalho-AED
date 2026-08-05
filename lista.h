@@ -1,7 +1,7 @@
 #ifndef _LISTA_H
 #define _LISTA_H
 
-typedef struct Artista{
+typedef struct Artista {
     char nome[100];
     char cidade_origem[100];
     char periodo_atuacao[50];
@@ -13,7 +13,7 @@ typedef struct Artista{
     struct Artista *prox;
 } Artista;
 
-typedef struct Genero{
+typedef struct Genero {
     char nome[100];
     struct Genero *prox;
     struct Genero *ant;
@@ -21,24 +21,38 @@ typedef struct Genero{
 } Genero;
 
 
-//==================== IGOR ====================
+//LISTA PRINCIPAL
 
 Genero *iniciarGenero();
-void imprimirGeneros(Genero *g);
-int contarGeneros(Genero *g);
-void listarTodosArtistas(Genero *g);
-int contarArtistas(Genero *g);
-void listarArtistas(Genero *g);
-void filtrarArtistasPorCidade(Genero *g, char *cidade);
-
-
-//==================== RHUAN ====================
-
-// Lista principal
+Genero *inserir_genero(Genero *lista_generos, const char *nome_genero);
+Genero *buscar_genero(Genero *lista, const char *nome_genero);
 void alterarGenero(Genero *g, char nomeAtual[], char novoNome[]);
 int removerGenero(Genero **g, char nome[]);
+void imprimirGeneros(Genero *g);
+int contarGeneros(Genero *g);
 
-// Lista secundária
+
+//LISTA SECUNDARIA
+
+void inserir_artista(Genero *genero,
+                     const char *nome,
+                     const char *cidade,
+                     const char *periodo,
+                     const char *obras,
+                     const char *integrantes,
+                     const char *premiacoes);
+
+int inserir_artista_no_genero(Genero *genero_alvo,
+                              const char *nome,
+                              const char *cidade,
+                              const char *periodo,
+                              const char *obras,
+                              const char *integrantes,
+                              const char *premiacoes);
+
+Artista *buscar_artista(Genero *lista_generos, const char *nome_artista);
+Artista *buscar_artista_no_genero(Genero *genero_alvo, const char *nome_artista);
+
 void alterarArtista(Genero *genero,
                     char nomeAtual[],
                     char novoNome[],
@@ -49,47 +63,24 @@ void alterarArtista(Genero *genero,
                     char premiacoes[]);
 
 int removerArtista(Genero *genero, char nome[]);
-
-// Consultas
-void artistasPorGenero(Genero *lista);
-void generoComMenosArtistas(Genero *lista);
+void listarArtistas(Genero *g);
+int contarArtistas(Genero *g);
 
 
-//==================== LAURA ====================
+//CONSULTAS
 
-// Lista principal
-Genero* inserir_genero(Genero *lista_generos, const char *nome_genero);
-Genero* buscar_genero(Genero *lista, const char *nome_genero);
-
-// Lista secundária
-void inserir_artista(Genero *genero,
-                     const char *nome,
-                     const char *cidade,
-                     const char *periodo,
-                     const char *obras,
-                     const char *integrantes,
-                     const char *premiacoes);
-
-Artista* buscar_artista(Genero *lista_generos, const char *nome_artista);
-
-Artista* buscar_artista_no_genero(Genero *genero_alvo,
-                                  const char *nome_artista);
-
-Artista* buscar_artista_global(Genero *lista_generos,
+Artista *buscar_artista_global(Genero *lista_generos,
                                const char *nome_artista,
                                Genero **genero_encontrado);
 
-int inserir_artista_no_genero(Genero *genero_alvo,
-                              const char *nome,
-                              const char *cidade,
-                              const char *periodo,
-                              const char *obras,
-                              const char *integrantes,
-                              const char *premiacoes);
-Artista* buscar_artista_qualquer(Genero *no_qualquer, const char *nome_artista, Genero **genero_encontrado);
-int ja_impresso(char nomes_impressos[][100], int qtd, const char *nome);
-void identificar_artistas_multi_genero(Genero *no_qualquer);
+Artista *buscar_artista_qualquer(Genero *no_qualquer,
+                                 const char *nome_artista,
+                                 Genero **genero_encontrado);
 
-
+void listarTodosArtistas(Genero *g);
+void filtrarArtistasPorCidade(Genero *g, char *cidade);
+void artistasPorGenero(Genero *lista);
+void generoComMenosArtistas(Genero *lista);
+void identificar_artistas_multi_genero(Genero *lista);
 
 #endif
