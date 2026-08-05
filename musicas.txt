@@ -3,3 +3,5 @@ Rock;Nirvana;Seattle;1987-1994;Nevermind;Kurt Cobain,Dave Grohl,Krist Novoselic;
 Pop;Taylor Swift;Reading;2004-presente;1989;Taylor Swift;Grammy
 Pop;Michael Jackson;Gary;1964-2009;Thriller;Solo;Grammy
 Rap;Eminem;Detroit;1996-presente;The Marshall Mathers LP;Solo;Grammy
+Sertanejo;Jorge e Mateus;Itumbiara;2005-presente;Os Anjos Cantam;Jorge e Mateus;Multishow
+MPB;Caetano Veloso;Santo Amaro;1965-presente;Transa;Solo;Grammy Latino
